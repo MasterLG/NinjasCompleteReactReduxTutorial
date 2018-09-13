@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/babel">
+        class App extends React.Component{
+            state={//it will hold data or ui-state. And this is the state of the component when it first loads.
+                    //unnecessarily you can define state inside constructor.
+                name:'Ryu',
+                age: 30
+               }
+               //handleClick(e){
+               //    console.log(e.target);
+                   //console.log(this.state)//This won't work because you can not access state inside function.Scope of this does not cover here.                   
+               //}
+               handleClick=(e)=>{//Arrow function has a special behavior when it comes to this keyword.It binds the instance values to this keyword make it available to the function.
+                   console.log(this.state);
+                   this.setState({//This is how we set the state.//Beware!If your state changes, component itself refreshes. Check the value of above math <p> when state changes. 
+                    name:'Yakisobo',
+                    age:28
+                   });
+               }
+               handleMouseOver(e){
+                   console.log(e);
+                   console.log(e.target,e.pageX);
+               }
+               handleCopy(e){
+                   console.log('Try being original once!')
+               }
+               handleChange=(e)=>{
+                this.setState({
+                    name:e.target.value
+                });
+               }
+               handleSubmit=(e)=>{
+                e.preventDefault();//why doing this?default behavior is submit to submit and reload. we prevent this reload action.
+                console.log('form submitted',this.state.name);
+               }
+            render(){//classes in react should have at least 1 method, here it is render.
+                return (
+                    //There should be only one root element at top, this div is root element in this component.
+                    //class is reserved in js, so we use className
+                    //below curly braces on p tag means dynamic js
+                    <div className="app-content">
+                        <h1>Hey, ninjas!</h1>                        
+                        <p>{Math.random()*10}</p>
+                        <p>My name is: {this.state.name} and I am {this.state.age}</p>                        
+                        <button onClick={this.handleClick}>Click Me</button>
+                        <button onMouseOver={this.handleMouseOver}>Hover Me</button>
+                        <p onCopy={this.handleCopy}>What we think, we become </p>
+                        <hr/>
+                        <form onSubmit={this.handleSubmit}>
+                            <input type="text"onChange={this.handleChange}/>
+                            <button>Submit</button>
+                        </form>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(<App/>, document.getElementById('app'));//we nest the above jsx code into upper html div
+    </script>
+</body>
+</html>
